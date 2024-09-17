@@ -35,7 +35,10 @@ export const postType = defineType({
       name: 'excerpt',
       type: 'portableText',
     }),
-    defineField({name: 'featuredMedia', type: 'image'}),
+    defineField({
+      name: 'featuredMedia',
+      type: 'image',
+    }),
     defineField({name: 'sticky', type: 'boolean'}),
     defineField({
       name: 'author',
@@ -67,21 +70,13 @@ export const postType = defineType({
       title: "Seo",
       name: "meta",
       type: "seoMetaFields",
-
     })
   ],
   preview: {
     select: {
       title: 'title',
       subtitle: 'author.name',
-      media: 'featuredMedia',
-      metaTitle: "seo",
-    },
-    prepare(selection) {
-      const { metaTitle } = selection?.metaTitle || "";
-      return {
-        title: metaTitle || selection.title,
-      };
-    },
+      media: 'featuredMedia.asset',
+    }
   },
 })

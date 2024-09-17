@@ -15,17 +15,20 @@
     "sanity"
   ],
   "dependencies": {
+    "@sanity/code-input": "^4.1.4",
     "@sanity/icons": "^3.4.0",
     "@sanity/vision": "^3.57.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sanity": "^3.57.3",
+    "sanity-plugin-media": "^2.3.2",
     "sanity-plugin-seo": "^1.2.5",
     "styled-components": "^6.1.8"
   },
   "devDependencies": {
     "@sanity/block-tools": "^3.57.3",
     "@sanity/eslint-config-studio": "^4.0.0",
+    "@types/jsdom": "^21.1.7",
     "@types/react": "^18.0.25",
     "@wordpress/block-serialization-default-parser": "^5.7.0",
     "eslint": "^8.6.0",

@@ -41,6 +41,23 @@ export const pageType = defineType({
       type: 'reference',
       to: [{type: 'author'}],
     }),
+    defineField({name: 'parent', type: 'reference', to: [{type: 'page'}]}),
+    defineField({
+      name: 'template',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Default Template', value: 'defualt'},
+          {title: 'Full Width', value: 'future'},
+          {title: 'Latest News', value: 'latest'}
+        ],
+      },
+    }),
+    defineField({
+      title: "Seo",
+      name: "meta",
+      type: "seoMetaFields",
+    })
   ],
   preview: {
     select: {

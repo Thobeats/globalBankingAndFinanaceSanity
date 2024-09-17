@@ -68,46 +68,7 @@ export type Geopoint = {
   alt?: number
 }
 
-export type PortableText = Array<
-  | {
-      children?: Array<{
-        marks?: Array<string>
-        text?: string
-        _type: 'span'
-        _key: string
-      }>
-      style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
-      listItem?: 'bullet' | 'number'
-      markDefs?: Array<{
-        href?: string
-        _type: 'link'
-        _key: string
-      }>
-      level?: number
-      _type: 'block'
-      _key: string
-    }
-  | {
-      asset?: {
-        _ref: string
-        _type: 'reference'
-        _weak?: boolean
-        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-      }
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      _type: 'image'
-      _key: string
-    }
-  | ({
-      _key: string
-    } & ExternalImage)
->
-
-export type ExternalImage = {
-  _type: 'externalImage'
-  url?: string
-}
+export type CodeBlock = Code
 
 export type Tag = {
   _id: string
@@ -138,8 +99,88 @@ export type Post = {
     | 'trash'
     | 'auto-draft'
     | 'inherit'
-  content?: PortableText
-  excerpt?: PortableText
+  content?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        asset?: {
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+        }
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        _type: 'image'
+        _key: string
+      }
+    | ({
+        _key: string
+      } & ExternalImage)
+    | ({
+        _key: string
+      } & Columns)
+    | ({
+        _key: string
+      } & Code)
+  >
+  excerpt?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        asset?: {
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+        }
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        _type: 'image'
+        _key: string
+      }
+    | ({
+        _key: string
+      } & ExternalImage)
+    | ({
+        _key: string
+      } & Columns)
+    | ({
+        _key: string
+      } & Code)
+  >
   featuredMedia?: {
     asset?: {
       _ref: string
@@ -175,6 +216,48 @@ export type Post = {
   }>
   meta?: SeoMetaFields
 }
+
+export type PortableText = Array<
+  | {
+      children?: Array<{
+        marks?: Array<string>
+        text?: string
+        _type: 'span'
+        _key: string
+      }>
+      style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+      listItem?: 'bullet' | 'number'
+      markDefs?: Array<{
+        href?: string
+        _type: 'link'
+        _key: string
+      }>
+      level?: number
+      _type: 'block'
+      _key: string
+    }
+  | {
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+      _key: string
+    }
+  | ({
+      _key: string
+    } & ExternalImage)
+  | ({
+      _key: string
+    } & Columns)
+  | ({
+      _key: string
+    } & Code)
+>
 
 export type Page = {
   _id: string
@@ -214,6 +297,33 @@ export type Page = {
     _weak?: boolean
     [internalGroqTypeReferenceTo]?: 'author'
   }
+  parent?: {
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    [internalGroqTypeReferenceTo]?: 'page'
+  }
+  template?: 'defualt' | 'future' | 'latest'
+  meta?: SeoMetaFields
+}
+
+export type ExternalImage = {
+  _type: 'externalImage'
+  url?: string
+}
+
+export type Column = {
+  _type: 'column'
+  content?: PortableText
+}
+
+export type Columns = {
+  _type: 'columns'
+  columns?: Array<
+    {
+      _key: string
+    } & Column
+  >
 }
 
 export type Category = {
@@ -224,6 +334,14 @@ export type Category = {
   _rev: string
   name?: string
   slug?: Slug
+  parent?: {
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    [internalGroqTypeReferenceTo]?: 'category'
+  }
+  description?: string
+  meta?: MetaTag
 }
 
 export type Author = {
@@ -247,6 +365,23 @@ export type Author = {
     crop?: SanityImageCrop
     _type: 'image'
   }
+}
+
+export type Code = {
+  _type: 'code'
+  language?: string
+  filename?: string
+  code?: string
+  highlightedLines?: Array<number>
+}
+
+export type MediaTag = {
+  _id: string
+  _type: 'media.tag'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name?: Slug
 }
 
 export type Slug = {
@@ -398,13 +533,18 @@ export type AllSanitySchemaTypes =
   | SanityImageDimensions
   | SanityFileAsset
   | Geopoint
-  | PortableText
-  | ExternalImage
+  | CodeBlock
   | Tag
   | Post
+  | PortableText
   | Page
+  | ExternalImage
+  | Column
+  | Columns
   | Category
   | Author
+  | Code
+  | MediaTag
   | Slug
   | MetaTag
   | MetaAttribute

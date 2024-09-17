@@ -1,80 +1,38 @@
-import {uuid} from '@sanity/uuid'
 import {decode} from 'html-entities'
-import type {SanityClient} from 'sanity'
+import {DateTimeInput, type SanityClient} from 'sanity'
 import type {WP_REST_API_Post} from 'wp-types'
-
-import type {Post} from '../../../sanity.types'
 import {sanityIdToImageReference} from './sanityIdToImageReference'
 import {sanityUploadFromUrl} from './sanityUploadFromUrl'
 import {wpImageFetch} from './wpImageFetch'
 import {htmlToBlockContent} from './htmlToBlockContent'
 
 
-// Remove these keys because they'll be created by Content Lake
-type StagedPost = Omit<Post, '_createdAt' | '_updatedAt' | '_rev'>
+import type {Page, SeoMetaFields} from '../../../sanity.types'
 
-export async function transformToPost(  wpDoc: WP_REST_API_Post,
+// Remove these keys because they'll be created by Content Lake
+type StagedPage = Omit<Page, '_createdAt' | '_updatedAt' | '_rev'>
+
+export async function transformToPage(
+  wpDoc: WP_REST_API_Post,
   client: SanityClient,
-  existingImages: Record<string, string> = {},): Promise<StagedPost> {
-  const doc: StagedPost = {
-    _id: `post-${wpDoc.id}`,
-    _type: 'post',
+  existingImages: Record<string, string> = {},
+): Promise<StagedPage> {
+  const doc: StagedPage = {
+    _id: `page-${wpDoc.id}`,
+    _type: 'page',
   }
 
   doc.title = decode(wpDoc.title.rendered).trim()
+  doc.date = wpDoc.date
+  doc.modified = wpDoc.modified
 
-  if (wpDoc.slug) {
+  if (wpDoc.slug)
+  {
     doc.slug = { _type: 'slug', current: wpDoc.slug }
   }
 
-  if (Array.isArray(wpDoc.categories) && wpDoc.categories.length) {
-    doc.categories = wpDoc.categories.map((catId) => ({
-      _type: 'reference',
-      _ref: `category-${catId}`,
-      _key: uuid()
-    }))
-  }
-
-  if (Array.isArray(wpDoc.tags) && wpDoc.tags.length) {
-    doc.tags = wpDoc.tags.map((tagId) => ({
-      _type: 'reference',
-      _ref: `tag-${tagId}`,
-      _key: uuid()
-    }))
-  }
-
-  if (wpDoc.author) {
-    doc.author = {
-      _type: 'reference',
-      _ref: `author-${wpDoc.author}`
-    }
-  }
-
-  if (wpDoc.date) {
-    doc.date = wpDoc.date
-  }
-  
-  if (wpDoc.modified) {
-    doc.modified = wpDoc.modified
-  }
-
   if (wpDoc.status) {
-    doc.status = wpDoc.status as StagedPost['status']
-  }
-
-  if (wpDoc.format) {
-    doc.format = wpDoc.format as StagedPost['format']
-  }
-  
-  doc.sticky = wpDoc.sticky == true
-
-  if (wpDoc.meta)
-  {
-    doc.meta = {
-        _type: "seoMetaFields",
-        metaTitle: wpDoc.meta_seopress_titles_title as string ?? "",
-        metaDescription: wpDoc.meta_seopress_titles_desc as string ?? "",
-    }
+    doc.status = wpDoc.status as StagedPage['status']
   }
 
   if (wpDoc.content) {
@@ -85,7 +43,13 @@ export async function transformToPost(  wpDoc: WP_REST_API_Post,
     doc.excerpt = await htmlToBlockContent(wpDoc.excerpt.rendered, client, existingImages)
   }
 
-  // Document has an image
+  if (wpDoc.author) {
+    doc.author = {
+      _type: 'reference',
+      _ref: `author-${wpDoc.author}`
+    }
+  }
+
   if (typeof wpDoc.featured_media === 'number' && wpDoc.featured_media > 0) {
     // Image exists already in dataset
     if (existingImages[wpDoc.featured_media]) {
@@ -110,6 +74,23 @@ export async function transformToPost(  wpDoc: WP_REST_API_Post,
       }
     }
   }
+
+  if (wpDoc.template)
+  {
+    doc.template = wpDoc.template as StagedPage['template']
+  }
+
+  if (wpDoc.parent) {
+    doc.parent = { _ref: wpDoc.parent.toString(), _type: 'reference' }
+  }
+
+  if (wpDoc.meta)
+  {
+    doc.meta = {
+        _type: "seoMetaFields",
+    } as SeoMetaFields
+  }
+
 
   return doc
 }
