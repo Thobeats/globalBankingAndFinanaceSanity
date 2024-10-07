@@ -50,5 +50,6 @@ export const portableTextType = defineField({
     {type: 'image'}, 
     {type: 'externalImage'}, 
     {type: 'columns'},
+    {type: 'code'},
   ],
 })
