@@ -10,7 +10,6 @@ const client = createClient({
     // a good idea. See "Specifying API version" section for more details
     apiVersion: "2024-10-04",
  //   'studioHost': 'gbaf',
-    token: 'skeNxKirReLkqJevzDzKYfXd7xxqyJX3yI15BtCelWP4mashb0rGGPCGw6hCpgbGTN8X9NlSwNfzGprFwa6uH6fFTVo2eQ0dsJP5DaJbk3pQC2fMXgfEbMKgK3gNFGSfkLhFCAQPe50ciPibeNi1iooWyGDyNArBZ4IPCy2WVOexT4tlrXto',
 });
 
 

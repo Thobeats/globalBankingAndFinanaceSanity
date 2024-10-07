@@ -60,7 +60,7 @@ export default defineMigration({
 
         const update = await client.patch(page._id).set({
             "meta": meta,
-           // "content": content,
+            "content": content,
             "excerpt": excerpt
         }).commit();
         idx++;
