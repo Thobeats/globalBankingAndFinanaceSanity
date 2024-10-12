@@ -9,6 +9,7 @@ import {postType} from './postType'
 import {tagType} from './tagType'
 import { codeType } from './codeType'
 import { navigation } from './navigationType'
+import { menu } from './menuType'
 
 export const schemaTypes = [
   authorType,
@@ -20,5 +21,5 @@ export const schemaTypes = [
   portableTextType,
   postType,
   tagType,
-  navigation
+  menu
 ]
