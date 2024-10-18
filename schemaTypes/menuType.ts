@@ -1,6 +1,6 @@
 import { defineType} from 'sanity';
 
-export const navigation = defineType({
+export const menu = defineType({
     name: 'menu',
     title: 'Menu',
     type: 'document',

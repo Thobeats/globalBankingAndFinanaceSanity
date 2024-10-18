@@ -29,10 +29,11 @@ export default defineMigration({
     const existingImages = await sanityFetchImages(client)
 
 
-    const pages = await client.fetch('*[_type == "page" && slug.current == "global-banking-finance-review-awards"]');
+    const pages = await client.fetch('*[_type == "page" && content == null]');
+    console.log(pages);
    // console.log(pages[0].content);
     let idx = 0;
-    pages.forEach(async (page) => {
+    pages.forEach((page) => {
         let pageId = page._id.split('-')[1];
         const wpPageRequest = await fetch(`https://stg-globalbankingandfinance-gbafstaging.kinsta.cloud/wp-json/wp/v2/pages/${pageId}`);
         const wpPage = await wpPageRequest.json();

@@ -40,6 +40,7 @@ export const postType = defineType({
       type: 'image',
     }),
     defineField({name: 'sticky', type: 'boolean'}),
+    defineField({name: 'exclusive', type: 'boolean', title: 'Exclusive Content', description: 'This post is exclusive', initialValue: false}),
     defineField({
       name: 'author',
       type: 'reference',
