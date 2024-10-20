@@ -12,6 +12,7 @@ import { navigation } from './navigationType'
 import { menu } from './menuType'
 import { newsLetterSubscription } from './newsLetter'
 import { awardType } from './awardType'
+import { awardCategoryType} from './awardCategoryType'
 
 export const schemaTypes = [
   authorType,
@@ -25,5 +26,6 @@ export const schemaTypes = [
   tagType,
   menu,
   newsLetterSubscription,
-  awardType
+  awardType,
+  awardCategoryType
 ]

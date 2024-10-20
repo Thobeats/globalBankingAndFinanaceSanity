@@ -68,6 +68,26 @@ export type Geopoint = {
   alt?: number
 }
 
+export type Award_categories = {
+  _id: string
+  _type: 'award_categories'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  award_category?: string
+  award_type?: 'process_and_product' | 'subcategory'
+  award_sub_categories?: Array<{
+    sub_category_title?: string
+    award_page?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'page'
+    }
+    _key: string
+  }>
+}
+
 export type Award = {
   _id: string
   _type: 'award'
@@ -541,6 +561,7 @@ export type AllSanitySchemaTypes =
   | SanityImageDimensions
   | SanityFileAsset
   | Geopoint
+  | Award_categories
   | Award
   | Newsletter
   | Menu
