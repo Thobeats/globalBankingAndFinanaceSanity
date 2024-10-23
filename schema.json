@@ -367,14 +367,14 @@
         },
         "optional": true
       },
-      "award_type": {
+      "has_sub": {
         "type": "objectAttribute",
         "value": {
           "type": "union",
           "of": [
             {
               "type": "string",
-              "value": "process_and_product"
+              "value": "no_subcategory"
             },
             {
               "type": "string",
@@ -397,34 +397,51 @@
                   "type": "string"
                 },
                 "optional": true
-              },
-              "award_page": {
+              }
+            },
+            "rest": {
+              "type": "object",
+              "attributes": {
+                "_key": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "optional": true
+      },
+      "has_options": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "no_options"
+            },
+            {
+              "type": "string",
+              "value": "options"
+            }
+          ]
+        },
+        "optional": true
+      },
+      "award_options": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "sub_option_title": {
                 "type": "objectAttribute",
                 "value": {
-                  "type": "object",
-                  "attributes": {
-                    "_ref": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "string"
-                      }
-                    },
-                    "_type": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "string",
-                        "value": "reference"
-                      }
-                    },
-                    "_weak": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "boolean"
-                      },
-                      "optional": true
-                    }
-                  },
-                  "dereferencesTo": "page"
+                  "type": "string"
                 },
                 "optional": true
               }
@@ -441,6 +458,30 @@
               }
             }
           }
+        },
+        "optional": true
+      },
+      "has_description": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "no_description"
+            },
+            {
+              "type": "string",
+              "value": "description"
+            }
+          ]
+        },
+        "optional": true
+      },
+      "award_description": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
         },
         "optional": true
       }
@@ -1982,6 +2023,13 @@
         "value": {
           "type": "inline",
           "name": "seoMetaFields"
+        },
+        "optional": true
+      },
+      "is_award": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
         },
         "optional": true
       }

@@ -57,6 +57,13 @@ export const pageType = defineType({
       title: "Seo",
       name: "meta",
       type: "seoMetaFields",
+    }),
+    defineField(
+    {
+      name: 'is_award',
+      title: 'Set as award Page',
+      type: 'boolean',
+      initialValue: false
     })
   ],
   preview: {

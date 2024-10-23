@@ -75,17 +75,18 @@ export type Award_categories = {
   _updatedAt: string
   _rev: string
   award_category?: string
-  award_type?: 'process_and_product' | 'subcategory'
+  has_sub?: 'no_subcategory' | 'subcategory'
   award_sub_categories?: Array<{
     sub_category_title?: string
-    award_page?: {
-      _ref: string
-      _type: 'reference'
-      _weak?: boolean
-      [internalGroqTypeReferenceTo]?: 'page'
-    }
     _key: string
   }>
+  has_options?: 'no_options' | 'options'
+  award_options?: Array<{
+    sub_option_title?: string
+    _key: string
+  }>
+  has_description?: 'no_description' | 'description'
+  award_description?: boolean
 }
 
 export type Award = {
@@ -352,6 +353,7 @@ export type Page = {
   }
   template?: 'defualt' | 'future' | 'latest'
   meta?: SeoMetaFields
+  is_award?: boolean
 }
 
 export type Category = {
