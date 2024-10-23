@@ -68,6 +68,16 @@ export type Geopoint = {
   alt?: number
 }
 
+export type Email_recipient = {
+  _id: string
+  _type: 'email_recipient'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name?: string
+  email?: string
+}
+
 export type Award_categories = {
   _id: string
   _type: 'award_categories'
@@ -563,6 +573,7 @@ export type AllSanitySchemaTypes =
   | SanityImageDimensions
   | SanityFileAsset
   | Geopoint
+  | Email_recipient
   | Award_categories
   | Award
   | Newsletter
