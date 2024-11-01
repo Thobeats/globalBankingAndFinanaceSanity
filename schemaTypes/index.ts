@@ -14,6 +14,7 @@ import { newsLetterSubscription } from './newsLetter'
 import { awardType } from './awardType'
 import { awardCategoryType} from './awardCategoryType'
 import { emailRecipients } from './emailRecipients'
+import { nominationType } from './nominationType'
 
 export const schemaTypes = [
   authorType,
@@ -29,5 +30,6 @@ export const schemaTypes = [
   newsLetterSubscription,
   awardType,
   awardCategoryType,
-  emailRecipients
+  emailRecipients,
+  nominationType
 ]

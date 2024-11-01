@@ -16,12 +16,12 @@ export const awardCategoryType = defineType({
     {
       name: 'has_sub',
       title: 'Has Subcategories',
-      type: 'string',
+      type: 'boolean',
       description: 'Choose whether to add subcategories or not',
       options: {
         list: [
-          { title: 'No Subcategory', value: 'no_subcategory' },
-          { title: 'Subcategory', value: 'subcategory' },
+          { title: 'No Subcategory', value: false },
+          { title: 'Subcategory', value: true },
         ], // Radio button choices
         layout: 'radio', // Makes it appear as radio buttons
       },
@@ -44,17 +44,17 @@ export const awardCategoryType = defineType({
               ]
           }
       ],
-      hidden: ({ parent }) => parent.has_sub !== 'subcategory', // Show only if 'subcategory' is selected
+      hidden: ({ parent }) => parent.has_sub !== true, // Show only if 'subcategory' is selected
     },
     {
       name: 'has_options',
       title: 'Has Options',
-      type: 'string',
+      type: 'boolean',
       description: 'Choose whether to add options or not',
       options: {
         list: [
-          { title: 'No Options', value: 'no_options' },
-          { title: 'Set Options', value: 'options' },
+          { title: 'No Options', value: false },
+          { title: 'Set Options', value: true },
         ], // Radio button choices
         layout: 'radio', // Makes it appear as radio buttons
       },
@@ -77,27 +77,43 @@ export const awardCategoryType = defineType({
               ]
           }
       ],
-      hidden: ({ parent }) => parent.has_options !== 'options', // Show only if 'subcategory' is selected
+      hidden: ({ parent }) => parent.has_options !== true, // Show only if 'options' is selected
     },
     {
       name: 'has_description',
       title: 'Has Description',
-      type: 'string',
+      type: 'boolean',
       description: 'Choose whether to add description or not',
       options: {
         list: [
-          { title: 'No Description', value: 'no_description' },
-          { title: 'Set Description', value: 'description' },
+          { title: 'No Description', value: false },
+          { title: 'Set Description', value: true },
         ], // Radio button choices
         layout: 'radio', // Makes it appear as radio buttons
       },
     },
     {
-      name: 'award_description',
-      title: 'Description',
-      type: 'boolean',
-      hidden: ({ parent }) => parent.has_description !== 'description', // Show only if 'subcategory' is selected
+      name: 'award_description_title',
+      title: 'Description Title',
+      type: 'string',
+      hidden: ({ parent }) => parent.has_description !== true, // Show only if 'description' is selected
     },
+    {
+      name: 'upload_file',
+      title: 'Accept File',
+      type: 'boolean'
+    },
+    {
+      name: 'textbox',
+      title: 'TextBox',
+      type: 'boolean'
+    },
+    {
+      name: 'textbox_title',
+      title: 'Textbox Title',
+      type: 'string',
+      hidden: ({parent}) => parent.textbox !== true
+    }
   ],
   preview: {
     select: {

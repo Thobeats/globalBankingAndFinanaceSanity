@@ -68,6 +68,28 @@ export type Geopoint = {
   alt?: number
 }
 
+export type Nomination = {
+  _id: string
+  _type: 'nomination'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  company_name?: string
+  award_category?: string
+  award_sub_category?: string
+  nomination_response?: string
+  award_options?: string
+  award_notes?: string
+  country_region?: string
+  country?: string
+  region?: string
+  firstname?: string
+  lastname?: string
+  job?: string
+  phone?: string
+  email?: string
+}
+
 export type Email_recipient = {
   _id: string
   _type: 'email_recipient'
@@ -85,18 +107,21 @@ export type Award_categories = {
   _updatedAt: string
   _rev: string
   award_category?: string
-  has_sub?: 'no_subcategory' | 'subcategory'
+  has_sub?: boolean
   award_sub_categories?: Array<{
     sub_category_title?: string
     _key: string
   }>
-  has_options?: 'no_options' | 'options'
+  has_options?: boolean
   award_options?: Array<{
     sub_option_title?: string
     _key: string
   }>
-  has_description?: 'no_description' | 'description'
-  award_description?: boolean
+  has_description?: boolean
+  award_description_title?: string
+  upload_file?: boolean
+  textbox?: boolean
+  textbox_title?: string
 }
 
 export type Award = {
@@ -573,6 +598,7 @@ export type AllSanitySchemaTypes =
   | SanityImageDimensions
   | SanityFileAsset
   | Geopoint
+  | Nomination
   | Email_recipient
   | Award_categories
   | Award
