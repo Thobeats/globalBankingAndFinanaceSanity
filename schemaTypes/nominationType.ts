@@ -84,6 +84,11 @@ export const nominationType = defineType({
             title: "Email",
             type: "string",
             validation: (Rule) => Rule.required()
+        }),
+        defineField({
+            name: "file",
+            title: "Upload File",
+            type: "file"
         })
     ],
     initialValue: {
