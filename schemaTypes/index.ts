@@ -15,6 +15,7 @@ import { awardType } from './awardType'
 import { awardCategoryType} from './awardCategoryType'
 import { emailRecipients } from './emailRecipients'
 import { nominationType } from './nominationType'
+import { articleType } from './articleType'
 
 export const schemaTypes = [
   authorType,
@@ -31,5 +32,6 @@ export const schemaTypes = [
   awardType,
   awardCategoryType,
   emailRecipients,
-  nominationType
+  nominationType,
+  articleType
 ]

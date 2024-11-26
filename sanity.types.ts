@@ -46,6 +46,20 @@ export type Geopoint = {
   alt?: number
 }
 
+export type Article = {
+  _id: string
+  _type: 'article'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title?: string
+  content?: string
+  date?: string
+  source?: string
+  traffic?: number
+  status?: 'active' | 'delete' | 'kill'
+}
+
 export type Nomination = {
   _id: string
   _type: 'nomination'
@@ -606,6 +620,7 @@ export type AllSanitySchemaTypes =
   | SanityImagePalette
   | SanityImageDimensions
   | Geopoint
+  | Article
   | Nomination
   | SanityFileAsset
   | Email_recipient

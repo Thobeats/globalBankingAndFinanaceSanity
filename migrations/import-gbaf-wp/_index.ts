@@ -22,7 +22,7 @@ async function updatePages()
         const wpPage = await wpPageRequest.json();
         const content = wpPage.content.rendered;
         const excerpt = wpPage.excerpt.rendered;
-        const meta ={
+        const meta = {
             "_type": "seoMetaFields",
             "metaDescription": wpPage.meta._seopress_titles_desc,
             "metaTitle": wpPage.meta._seopress_titles_title,
