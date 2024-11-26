@@ -1,4 +1,4 @@
-export const getAccessToken = async function () {
+const getAccessToken = async function () {
   try {
     const res = await fetch('https://auth.thomsonreuters.com/oauth/token', {
       method: 'POST',
@@ -21,3 +21,4 @@ export const getAccessToken = async function () {
     throw new Error(error.message)
   }
 }
+
