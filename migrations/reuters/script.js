@@ -1,4 +1,6 @@
-import dotenv from 'dotenv'
+import {configDotenv} from 'dotenv'
+configDotenv()
+
 const getAccessToken = async function () {
   try {
     const res = await fetch('https://auth.thomsonreuters.com/oauth/token', {
@@ -25,7 +27,7 @@ const getAccessToken = async function () {
 
 const token = await getAccessToken()
 
-export const getCategoryItems = async function(accessToken) {
+export const getCategoryItems = async function (accessToken) {
   if (typeof accessToken !== 'string') console.error('Bad Request')
 
   const query = `{
@@ -47,9 +49,9 @@ export const getCategoryItems = async function(accessToken) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ query })
+      body: JSON.stringify({query}),
     })
 
     if (!res.ok) throw new Error('The network is bad')
@@ -65,7 +67,7 @@ export const getCategoryItems = async function(accessToken) {
 
 const item = await getCategoryItems(token)
 
-const fetchItemContent = async function(versionedGuid, accessToken) {
+const fetchItemContent = async function (versionedGuid, accessToken) {
   const query = `{
     item(id: '${versionedGuid}) {
       headLine,
@@ -80,9 +82,9 @@ const fetchItemContent = async function(versionedGuid, accessToken) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ query })
+      body: JSON.stringify({query}),
     })
 
     const data = await res.json()
