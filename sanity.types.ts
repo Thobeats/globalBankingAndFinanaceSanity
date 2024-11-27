@@ -52,8 +52,12 @@ export type Article = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  title?: string
-  content?: string
+  post?: {
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    [internalGroqTypeReferenceTo]?: 'post'
+  }
   date?: string
   source?: string
   traffic?: number

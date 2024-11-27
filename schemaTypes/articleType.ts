@@ -7,8 +7,7 @@ export const articleType = defineType({
   type: 'document',
   icon: ActivityIcon,
   fields: [
-    { name: 'title', type: 'string', title: 'Title' },
-    { name: 'content', type: 'text', title: 'Content' },
+    { name: 'post', type: 'reference', to: [{type: 'post'}]},
     { name: 'date', type: 'datetime', title: 'Publication Date' },
     { name: 'source', type: 'string', title: 'Source' },
     { name: 'traffic', type: 'number', title: 'Traffic Score' },
@@ -16,7 +15,7 @@ export const articleType = defineType({
   ],
   preview: {
     select: {
-      title: 'title',
+      title: 'post.title',
       subtitle: 'source'
     },
   },
