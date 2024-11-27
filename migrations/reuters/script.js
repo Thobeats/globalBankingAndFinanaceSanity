@@ -106,7 +106,7 @@ const fetchItemContent = async function (versionedGuid, accessToken) {
   }
 }
 
-const getAllItemContents = async function (items, accessToken) {
+export const getAllItemContents = async function (items, accessToken) {
   const fetchPromises = items.map((item) => fetchItemContent(item?.versionedGuid, accessToken))
   const contents = await Promise.all(fetchPromises)
 
@@ -117,8 +117,3 @@ const getAllItemContents = async function (items, accessToken) {
   console.log(itemContents)
   return itemContents
 }
-
-const token = await getAccessToken()
-const item = await getCategoryItems(token)
-
-await getAllItemContents(item, token)
