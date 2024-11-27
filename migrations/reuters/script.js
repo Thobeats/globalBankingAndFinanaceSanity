@@ -114,6 +114,5 @@ export const getAllItemContents = async function (items, accessToken) {
     .filter((content) => content?.data?.item?.bodyXhtml !== null)
     .map((content) => content?.data?.item)
 
-  console.log(itemContents)
   return itemContents
 }
