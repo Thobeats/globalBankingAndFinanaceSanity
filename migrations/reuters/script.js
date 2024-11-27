@@ -70,7 +70,7 @@ export const getCategoryItems = async function (accessToken) {
 
 const fetchItemContent = async function (versionedGuid, accessToken) {
   const query = `{
-    item(id: "${versionedGuid}") {
+    item(id: "${versionedGuid}" option: {previewMode: DIRECT}) {
       headLine,
       bodyXhtml,
       fragment,
@@ -79,13 +79,8 @@ const fetchItemContent = async function (versionedGuid, accessToken) {
       type,
       uri,
       versionedGuid
-      renditions {
-        mimeType
-        uri
-        type
-        version
-        code
-        points }
+      previewUrl,
+      thumbnailUrl,
     }
   }`
 
@@ -102,6 +97,9 @@ const fetchItemContent = async function (versionedGuid, accessToken) {
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
 
     const data = await res.json()
+
+    console.log('Full response data:', JSON.stringify(data, null, 2))
+
     return data
   } catch (error) {
     throw new Error(error.message)
@@ -119,5 +117,8 @@ const getAllItemContents = async function (items, accessToken) {
   console.log(itemContents)
   return itemContents
 }
+
+const token = await getAccessToken()
+const item = await getCategoryItems(token)
 
 await getAllItemContents(item, token)
