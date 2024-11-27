@@ -23,7 +23,11 @@ const getAccessToken = async function () {
   }
 }
 
+const token = await getAccessToken()
+
 export const getCategoryItems = async function(accessToken) {
+  if (typeof accessToken !== 'string') console.error('Bad Request')
+
   const query = `{
     search(filter: {
     namedQueries: {filters: "cat://bus"}}, 
@@ -53,8 +57,10 @@ export const getCategoryItems = async function(accessToken) {
     const data = await res.json()
 
     console.log(data)
+    return data.data.search.items
   } catch (error) {
     throw new Error(error.message)
   }
 }
 
+const item = await getCategoryItems(token)
