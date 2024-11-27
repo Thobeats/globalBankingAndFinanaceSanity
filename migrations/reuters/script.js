@@ -1,3 +1,4 @@
+import dotenv from 'dotenv'
 const getAccessToken = async function () {
   try {
     const res = await fetch('https://auth.thomsonreuters.com/oauth/token', {
@@ -22,15 +23,36 @@ const getAccessToken = async function () {
   }
 }
 
-const getCategoryItems = async function() {
+export const getCategoryItems = async function(accessToken) {
+  const query = `{
+    search(filter: {
+    namedQueries: {filters: "cat://bus"}}, 
+    sort: {direction: DESC, field: CONTENT_TIMESTAMP}, limit: 100)
+    {
+      totalHits
+      item {
+      headLine 
+      versionedGuid
+      contentTimestamp,
+      }
+    }
+  }`
+
   try {
     const res = await fetch('https://api.reutersconnect.com/content/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer `
-      }
+        Authorization: `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({ query })
     })
+
+    if (!res.ok) throw new Error('The network is bad')
+
+    const data = await res.json()
+
+    console.log(data)
   } catch (error) {
     throw new Error(error.message)
   }
