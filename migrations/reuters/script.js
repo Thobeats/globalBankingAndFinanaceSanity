@@ -1,7 +1,7 @@
 import {configDotenv} from 'dotenv'
 configDotenv()
 
-const getAccessToken = async function () {
+export const getAccessToken = async function () {
   try {
     const res = await fetch('https://auth.thomsonreuters.com/oauth/token', {
       method: 'POST',
@@ -17,15 +17,15 @@ const getAccessToken = async function () {
           'https://api.thomsonreuters.com/auth/reutersconnect.contentapi.read https://api.thomsonreuters.com/auth/reutersconnect.contentapi.write',
       }),
     })
+
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+
     const data = await res.json()
-    console.log(data)
     return data.access_token
   } catch (error) {
     throw new Error(error.message)
   }
 }
-
-const token = await getAccessToken()
 
 export const getCategoryItems = async function (accessToken) {
   if (typeof accessToken !== 'string') console.error('Bad Request')
@@ -52,11 +52,11 @@ export const getCategoryItems = async function (accessToken) {
       body: JSON.stringify({query}),
     })
 
-    if (!res.ok) throw new Error('The network is bad')
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
 
     const data = await res.json()
 
-    console.log('Full response data:', JSON.stringify(data, null, 2))
+    // console.log('Full response data:', JSON.stringify(data, null, 2))
 
     if (!data.data || !data.data.search || !data.data.search.items) {
       throw new Error('The expected data structure is not present in the response')
@@ -64,25 +64,26 @@ export const getCategoryItems = async function (accessToken) {
 
     return data.data.search.items
   } catch (error) {
-    console.error('Error:', error.message)
     throw new Error(error.message)
   }
 }
 
-const item = await getCategoryItems(token)
-
 const fetchItemContent = async function (versionedGuid, accessToken) {
   const query = `{
-    item(id: '${versionedGuid}) {
+    item(id: "${versionedGuid}") {
       headLine,
       bodyXhtml,
+      fragment,
+      slug,
+      pubStatus,
+      type,
       uri,
       versionedGuid
     }
   }`
 
   try {
-    const res = await fetch('', {
+    const res = await fetch('https://api.reutersconnect.com/content/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -91,20 +92,25 @@ const fetchItemContent = async function (versionedGuid, accessToken) {
       body: JSON.stringify({query}),
     })
 
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+
     const data = await res.json()
-    console.log(data)
+    return data
   } catch (error) {
     throw new Error(error.message)
   }
 }
 
-const getAllItemContents = async function (item, accessToken) {
-  const itemContents = []
+const getAllItemContents = async function (items, accessToken) {
+  const fetchPromises = items.map((item) => fetchItemContent(item?.versionedGuid, accessToken))
+  const contents = await Promise.all(fetchPromises)
 
-  for (const item of items) {
-    const item = await fetchItemContent(item.versionedGuid, accessToken)
-    itemContents.push(item.data.items)
-  }
+  const itemContents = contents
+    .filter((content) => content?.data?.item?.bodyXhtml !== null)
+    .map((content) => content?.data?.item)
 
   console.log(itemContents)
+  return itemContents
 }
+
+await getAllItemContents(item, token)
