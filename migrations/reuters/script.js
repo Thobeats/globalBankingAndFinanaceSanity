@@ -97,3 +97,14 @@ const fetchItemContent = async function (versionedGuid, accessToken) {
     throw new Error(error.message)
   }
 }
+
+const getAllItemContents = async function (item, accessToken) {
+  const itemContents = []
+
+  for (const item of items) {
+    const item = await fetchItemContent(item.versionedGuid, accessToken)
+    itemContents.push(item.data.items)
+  }
+
+  console.log(itemContents)
+}
