@@ -60,6 +60,7 @@ export type Article = {
   }
   date?: string
   source?: string
+  versionGuid?: string
   traffic?: number
   status?: 'active' | 'delete' | 'kill'
 }

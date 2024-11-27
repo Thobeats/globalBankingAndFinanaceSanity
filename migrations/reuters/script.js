@@ -92,7 +92,7 @@ const fetchItemContent = async function (versionedGuid, accessToken) {
       thumbnailUrl,
       contentCreated,
       versionCreated,
-      source{literal},
+      source{literal}
     }
   }`
 

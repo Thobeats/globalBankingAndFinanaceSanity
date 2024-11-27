@@ -10,6 +10,7 @@ export const articleType = defineType({
     { name: 'post', type: 'reference', to: [{type: 'post'}]},
     { name: 'date', type: 'datetime', title: 'Publication Date' },
     { name: 'source', type: 'string', title: 'Source' },
+    { name: 'versionGuid', type: 'string', title: 'Version GUID' },
     { name: 'traffic', type: 'number', title: 'Traffic Score' },
     { name: 'status', type: 'string', title: 'Status', options: { list: ['active', 'delete', 'kill'] } },
   ],

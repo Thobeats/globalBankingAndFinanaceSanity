@@ -29,7 +29,8 @@
     "sanity": "^3.59.1",
     "sanity-plugin-media": "^2.3.2",
     "sanity-plugin-seo": "^1.2.5",
-    "styled-components": "^6.1.13"
+    "styled-components": "^6.1.13",
+    "unsplash-js": "^7.0.19"
   },
   "devDependencies": {
     "@sanity/block-tools": "^3.59.1",

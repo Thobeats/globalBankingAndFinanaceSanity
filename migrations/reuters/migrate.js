@@ -1,6 +1,7 @@
 import { getAccessToken, getAllItemContents, getCategoryItems } from "./script.js";
-import { createReuterPost, createArticle, getAuthor, getCategory } from "./sanity_helpers.js";
+import { createReuterPost, createArticle, getAuthor, getCategory, uploadImage } from "./sanity_helpers.js";
 import {uuid} from '@sanity/uuid'
+import { searchUnsplashPhotos } from "./unsplash.js";
 
 try{
     getAccessToken().then(async (access_token) => {
@@ -10,6 +11,14 @@ try{
         const categories = await getCategory(['Business', 'Finance']);
 
         allItemContents.forEach(async (item) => {
+
+            if (item.thumbnailUrl === null) {
+                const photos = await searchUnsplashPhotos(item.headLine);
+                item.thumbnailUrl = photos.results[0].urls.regular;
+            }
+
+            let featureImage = await uploadImage(item.thumbnailUrl, item.headLine.replace(/\s/g, '-'));
+
             const post = {
                 _type: 'post',
                 _id: uuid(),
@@ -29,9 +38,9 @@ try{
                         _key: uuid()
                     }
                 }),
-                date: item.contentCreated,
-                modified: item.versionCreated,
-                status: item.pubStatus,
+                date: new Date(item.contentCreated).toISOString(),
+                modified: new Date(item.versionCreated).toISOString(),
+                status: 'published',
                 sticky: true,
                 format: 'standard',
                 meta: {
@@ -55,11 +64,19 @@ try{
                             }
                         ]
                     }
-                ]
+                ],
+                featuredMedia: {
+                    _type: 'image',
+                    asset: {
+                        _type: 'reference',
+                        _ref: featureImage._id
+                    }
+                }
             };
 
             const postId = await createReuterPost(post);
-            console.log(postId);
+            const formattedDate = new Date(item.contentCreated).toISOString();
+
             const article = {
                 _type: 'article',
                 _id: uuid(),
@@ -68,7 +85,8 @@ try{
                     _ref: postId
                 },
                 source: item.source.literal,
-                date: item.contentCreated,
+                date: formattedDate,
+                versionGuid: item.uri,
                 traffic: 0,
                 status: 'active'
             };
@@ -76,7 +94,7 @@ try{
             console.log(articleId);
         });
 
-        //console.log(allItemContents);
+        console.log(allItemContents);
     });
     
 
