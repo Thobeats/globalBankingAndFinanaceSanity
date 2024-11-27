@@ -44,7 +44,47 @@ export async function getCategory(list) {
         *[
             _type == "category" && name in $list
         ]{name, _id}
-    `
-  const result = await client.fetch(query, {list})
-  return result
+    `;
+    const result = await client.fetch(query, {list});
+    return result;
+}
+
+export async function getPost(category)
+{
+    const query = `
+        *[
+            _type == "post" && category == $category
+        ]
+    `;
+    const result = await client.fetch(query, {category});
+    return result;
+}
+
+export async function deletePost()
+{
+    client.delete({
+        query: `*[
+            _type == "article"
+        ]`
+    }).then((res) => {
+        client.delete({query: `*[
+            _type == "post" && author._ref == "8f309a69-87d5-49ff-8b25-962023943f4e"
+        ]`});
+    });
+
+    
+}
+
+
+export async function uploadImage(url, filename)
+{
+    const image = await fetch(url);
+
+    const buffer = await image.arrayBuffer();
+    const readableStream = Readable.from(Buffer.from(buffer));
+
+    const result = await client.assets.upload('image', readableStream, {
+        filename
+    });
+    return result;
 }
