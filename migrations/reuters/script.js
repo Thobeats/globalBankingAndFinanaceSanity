@@ -1,36 +1,35 @@
 import {configDotenv} from 'dotenv'
 configDotenv()
-import pkg from 'node-cache';
-const NodeCache = pkg;
-const cache = new NodeCache();
-
+import pkg from 'node-cache'
+const NodeCache = pkg
+const cache = new NodeCache()
 
 export const getAccessToken = async function () {
   try {
     if (cache.has('access_token')) {
       const access_token = cache.get('access_token')
-      return access_token;
+      return access_token
     }
-      const res = await fetch('https://auth.thomsonreuters.com/oauth/token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          client_id: process.env.client_id,
-          client_secret: process.env.client_secret,
-          grant_type: 'client_credentials',
-          audience: process.env.audience,
-          scope:
-            'https://api.thomsonreuters.com/auth/reutersconnect.contentapi.read https://api.thomsonreuters.com/auth/reutersconnect.contentapi.write',
-        }),
-      })
+    const res = await fetch('https://auth.thomsonreuters.com/oauth/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        client_id: process.env.client_id,
+        client_secret: process.env.client_secret,
+        grant_type: 'client_credentials',
+        audience: process.env.audience,
+        scope:
+          'https://api.thomsonreuters.com/auth/reutersconnect.contentapi.read https://api.thomsonreuters.com/auth/reutersconnect.contentapi.write',
+      }),
+    })
 
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
 
-      const data = await res.json()
-      cache.set('access_token', data.access_token, 86400);
-      return data.access_token
+    const data = await res.json()
+    cache.set('access_token', data.access_token, 86400)
+    return data.access_token
   } catch (error) {
     throw new Error(error.message)
   }
@@ -110,7 +109,7 @@ const fetchItemContent = async function (versionedGuid, accessToken) {
 
     const data = await res.json()
 
-   // console.log('Full response data:', JSON.stringify(data, null, 2))
+    // console.log('Full response data:', JSON.stringify(data, null, 2))
 
     return data
   } catch (error) {

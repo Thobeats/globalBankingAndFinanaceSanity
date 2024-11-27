@@ -18,6 +18,7 @@
   "dependencies": {
     "@sanity/code-input": "^4.1.4",
     "@sanity/icons": "^3.4.0",
+    "@sanity/uuid": "^3.0.2",
     "@sanity/vision": "^3.59.1",
     "dotenv": "^16.4.5",
     "node-cache": "^5.1.2",
