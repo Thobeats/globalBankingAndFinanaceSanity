@@ -64,3 +64,30 @@ export const getCategoryItems = async function(accessToken) {
 }
 
 const item = await getCategoryItems(token)
+
+const fetchItemContent = async function(versionedGuid, accessToken) {
+  const query = `{
+    item(id: '${versionedGuid}) {
+      headLine,
+      bodyXhtml,
+      uri,
+      versionedGuid
+    }
+  }`
+
+  try {
+    const res = await fetch('', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({ query })
+    })
+
+    const data = await res.json()
+    console.log(data)
+  } catch (error) {
+    throw new Error(error.message)
+  }
+}
