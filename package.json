@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "main": "package.json",
   "license": "UNLICENSED",
+  "type": "module",
   "scripts": {
     "dev": "sanity dev",
     "start": "sanity start",
@@ -18,6 +19,7 @@
     "@sanity/code-input": "^4.1.4",
     "@sanity/icons": "^3.4.0",
     "@sanity/vision": "^3.59.1",
+    "dotenv": "^16.4.5",
     "node-cron": "^3.0.3",
     "npm-check-updates": "^17.1.3",
     "react": "^18.3.1",
