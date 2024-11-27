@@ -31,12 +31,10 @@ export const getCategoryItems = async function (accessToken) {
   if (typeof accessToken !== 'string') console.error('Bad Request')
 
   const query = `{
-    search(filter: {
-    namedQueries: {filters: "cat://bus"}}, 
-    sort: {direction: DESC, field: CONTENT_TIMESTAMP}, limit: 100)
+    search(filter: {namedQueries: {filters: "cat://bus"}}, sort: {direction: DESC, field: CONTENT_TIMESTAMP}, limit: 100)
     {
       totalHits
-      item {
+      items {
       headLine 
       versionedGuid
       contentTimestamp,
@@ -58,9 +56,15 @@ export const getCategoryItems = async function (accessToken) {
 
     const data = await res.json()
 
-    console.log(data)
+    console.log('Full response data:', JSON.stringify(data, null, 2))
+
+    if (!data.data || !data.data.search || !data.data.search.items) {
+      throw new Error('The expected data structure is not present in the response')
+    }
+
     return data.data.search.items
   } catch (error) {
+    console.error('Error:', error.message)
     throw new Error(error.message)
   }
 }
