@@ -79,6 +79,13 @@ const fetchItemContent = async function (versionedGuid, accessToken) {
       type,
       uri,
       versionedGuid
+      renditions {
+        mimeType
+        uri
+        type
+        version
+        code
+        points }
     }
   }`
 
