@@ -31,6 +31,7 @@ export const getAccessToken = async function () {
     cache.set('access_token', data.access_token, 86400)
     return data.access_token
   } catch (error) {
+    console.log(error.message)
     throw new Error(error.message)
   }
 }

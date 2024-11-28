@@ -19,7 +19,7 @@ try {
     allItemContents.forEach(async (item) => {
       if (item.thumbnailUrl === null) {
         const photos = await searchUnsplashPhotos(item.headLine)
-        item.thumbnailUrl = photos.results[0].urls.regular
+        item.thumbnailUrl = photos?.results[0]?.urls?.regular
       }
 
       let featureImage = await uploadImage(item.thumbnailUrl, item.headLine.replace(/\s/g, '-'))
