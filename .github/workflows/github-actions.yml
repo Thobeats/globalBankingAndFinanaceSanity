@@ -1,0 +1,30 @@
+name: migrate data from reuters to sanity
+on:
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  run-cron-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '23'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run cron job
+        env:
+          client_id: ${{ secrets.CLIENT_ID }}
+          client_secret: ${{ secrets.CLIENT_SECRET }}
+          audience: ${{ secrets.AUDIENCE }}
+          token: ${{ secrets.TOKEN }}
+        run: pnpm run migate
