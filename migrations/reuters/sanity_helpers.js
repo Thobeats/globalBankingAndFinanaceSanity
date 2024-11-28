@@ -1,6 +1,8 @@
 import {createClient} from '@sanity/client'
 import {configDotenv} from 'dotenv'
 import { Readable } from 'stream';
+import {uuid} from '@sanity/uuid'
+
 configDotenv()
 
 const client = createClient({
@@ -87,4 +89,28 @@ export async function uploadImage(url, filename)
         filename
     });
     return result;
+}
+
+export async function updateReuters()
+{
+    const posts = await client.fetch(`*[
+            _type == "post" && author._ref == "8f309a69-87d5-49ff-8b25-962023943f4e"
+        ]`);
+
+    posts.forEach(element => {
+        client.patch(element._id).set({
+            content: [{
+                _type: 'code',
+                code: trimContent(element.content[0].code),
+                _key: uuid()
+            }]
+        }).commit();
+    });
+
+}
+
+export function trimContent(content)
+{
+    return content.replace(/<html[^>]*>|<head[^>]*>|<\/head>|<title[^>]*>|<\/title>|<\/html>|<body[^>]*>|<\/body>/g, '');
+
 }

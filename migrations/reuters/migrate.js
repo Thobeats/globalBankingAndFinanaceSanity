@@ -1,5 +1,5 @@
 import { getAccessToken, getAllItemContents, getCategoryItems } from "./script.js";
-import { createReuterPost, createArticle, getAuthor, getCategory, uploadImage } from "./sanity_helpers.js";
+import { createReuterPost, createArticle, getAuthor, getCategory, uploadImage, trimContent } from "./sanity_helpers.js";
 import {uuid} from '@sanity/uuid'
 import { searchUnsplashPhotos } from "./unsplash.js";
 
@@ -25,7 +25,7 @@ try{
                 title: item.headLine,
                 slug: {
                     _type: 'slug',
-                    current: item.headLine
+                    current: item.slug
                 },
                 author: {
                     _type: 'reference',
@@ -38,9 +38,9 @@ try{
                         _key: uuid()
                     }
                 }),
-                date: new Date(item.contentCreated).toISOString(),
+                date: new Date().toISOString(),
                 modified: new Date(item.versionCreated).toISOString(),
-                status: 'published',
+                status: 'publish',
                 sticky: true,
                 format: 'standard',
                 meta: {
@@ -50,7 +50,7 @@ try{
                 },
                 content: [{
                     _type: 'code',
-                    code: item.bodyXhtml,
+                    code: trimContent(item.bodyXhtml),
                     _key: uuid()
                 }],
                 excerpt: [
