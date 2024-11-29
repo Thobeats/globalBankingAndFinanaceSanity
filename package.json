@@ -17,6 +17,7 @@
     "sanity"
   ],
   "dependencies": {
+    "@sanity/client": "^3.0.0",
     "@sanity/code-input": "^4.1.4",
     "@sanity/icons": "^3.4.0",
     "@sanity/uuid": "^3.0.2",
