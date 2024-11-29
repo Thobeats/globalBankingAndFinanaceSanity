@@ -27,4 +27,4 @@ jobs:
           client_secret: ${{ secrets.CLIENT_SECRET }}
           audience: ${{ secrets.AUDIENCE }}
           token: ${{ secrets.TOKEN }}
-        run: pnpm run migate
+        run: pnpm run migrate
