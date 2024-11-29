@@ -1,4 +1,4 @@
-import {createClient} from '@sanity/client'
+import createClient from '@sanity/client'
 import {configDotenv} from 'dotenv'
 import { Readable } from 'stream';
 import {uuid} from '@sanity/uuid'
