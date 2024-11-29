@@ -1,5 +1,12 @@
-import { getAccessToken, getAllItemContents, getCategoryItems } from "./script.js";
-import { createReuterPost, createArticle, getAuthor, getCategory, uploadImage, trimContent } from "./sanity_helpers.js";
+import {getAccessToken, getAllItemContents, getCategoryItems} from './script.js'
+import {
+  createReuterPost,
+  createArticle,
+  getAuthor,
+  getCategory,
+  uploadImage,
+  trimContent,
+} from './sanity_helpers.js'
 import {uuid} from '@sanity/uuid'
 import {searchUnsplashPhotos} from './unsplash.js'
 
@@ -16,61 +23,65 @@ try {
         item.thumbnailUrl = photos?.results[0]?.urls?.regular
       }
 
-      let featureImage = await uploadImage(item.thumbnailUrl, item.headLine.replace(/\s/g, '-'))
-        const post = {
-            _type: 'post',
-            _id: uuid(),
-            title: item.headLine,
-            slug: {
-                _type: 'slug',
-                current: item.slug
-            },
-            author: {
-                _type: 'reference',
-                _ref: author[0]._id
-            },
-            categories: categories.map((category) => {
-                return {
-                    _type: 'reference',
-                    _ref: category._id,
-                    _key: uuid()
-                }
-            }),
-            date: new Date().toISOString(),
-            modified: new Date(item.versionCreated).toISOString(),
-            status: 'publish',
-            sticky: true,
-            format: 'standard',
-            meta: {
-                _type: "seoMetaFields",
-                metaTitle: item.headLine,
-                metaDescription: item.fragment,
-            },
-            content: [{
-                _type: 'code',
-                code: trimContent(item.bodyXhtml),
-                _key: uuid()
-            }],
-            excerpt: [
-                {
-                    _type: 'block',
-                    _key: uuid(),
-                    children: [
-                        {
-                            _type: 'span',
-                            text: item.fragment
-                        }
-                    ]
-                }
+      if (!item.thumbnailUrl) return
+
+      let featureImage = await uploadImage(item?.thumbnailUrl, item?.headLine?.replace(/\s/g, '-'))
+      const post = {
+        _type: 'post',
+        _id: uuid(),
+        title: item.headLine,
+        slug: {
+          _type: 'slug',
+          current: item.slug,
+        },
+        author: {
+          _type: 'reference',
+          _ref: author[0]._id,
+        },
+        categories: categories.map((category) => {
+          return {
+            _type: 'reference',
+            _ref: category._id,
+            _key: uuid(),
+          }
+        }),
+        date: new Date().toISOString(),
+        modified: new Date(item.versionCreated).toISOString(),
+        status: 'publish',
+        sticky: true,
+        format: 'standard',
+        meta: {
+          _type: 'seoMetaFields',
+          metaTitle: item.headLine,
+          metaDescription: item.fragment,
+        },
+        content: [
+          {
+            _type: 'code',
+            code: trimContent(item.bodyXhtml),
+            _key: uuid(),
+          },
+        ],
+        excerpt: [
+          {
+            _type: 'block',
+            _key: uuid(),
+            children: [
+              {
+                _type: 'span',
+                text: item.fragment,
+              },
             ],
-            featuredMedia: {
-                _type: 'image',
-                asset: {
-                    _type: 'reference',
-                    _ref: featureImage._id
-                }
-            }
-        };
+          },
+        ],
+        featuredMedia: {
+          _type: 'image',
+          asset: {
+            _type: 'reference',
+            _ref: featureImage._id,
+          },
+        },
+      }
 
       const article = {
         _type: 'article',
