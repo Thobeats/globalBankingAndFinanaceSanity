@@ -83,6 +83,8 @@ try {
         },
       }
 
+      const postId = await createReuterPost(post);
+
       const article = {
         _type: 'article',
         _id: uuid(),
@@ -91,7 +93,7 @@ try {
           _ref: postId,
         },
         source: item.source.literal,
-        date: formattedDate,
+        date: new Date(item.versionCreated).toISOString(),
         versionGuid: item.uri,
         traffic: 0,
         status: 'active',
@@ -100,7 +102,7 @@ try {
       console.log(articleId)
     })
 
-    console.log(allItemContents)
+    //console.log(allItemContents)
   })
 } catch (err) {
   console.error(err.message)
