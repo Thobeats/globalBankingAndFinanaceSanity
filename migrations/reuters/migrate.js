@@ -20,7 +20,8 @@ try {
     allItemContents.forEach(async (item) => {
       if (item.thumbnailUrl === null) {
         const photos = await searchUnsplashPhotos(item.headLine)
-        item.thumbnailUrl = photos?.results[0]?.urls?.regular
+        const randomNumber = Math.floor(Math.random() * 5)
+        item.thumbnailUrl = photos?.results[randomNumber]?.urls?.regular
       }
 
       if (!item.thumbnailUrl) return
