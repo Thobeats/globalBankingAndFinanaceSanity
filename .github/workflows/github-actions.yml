@@ -1,8 +1,8 @@
 name: migrate data from reuters to sanity
 on:
-  schedule: 
+  schedule:
     - cron: '0 0 * * *'
-  
+
 jobs:
   run-cron-job:
     runs-on: ubuntu-latest
@@ -28,4 +28,5 @@ jobs:
           client_secret: ${{ secrets.CLIENT_SECRET }}
           audience: ${{ secrets.AUDIENCE }}
           token: ${{ secrets.TOKEN }}
+          unsplash: ${{ secrets.UNSPLASH }}
         run: pnpm run migrate
