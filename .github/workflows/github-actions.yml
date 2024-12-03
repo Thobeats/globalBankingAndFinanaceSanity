@@ -1,5 +1,7 @@
 name: migrate data from reuters to sanity
-on: [push]
+on:
+  schedule:
+    - cron: '0 0 * * 0'
 
 jobs:
   run-cron-job:
