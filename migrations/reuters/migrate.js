@@ -11,6 +11,8 @@ import {uuid} from '@sanity/uuid'
 import {searchUnsplashPhotos} from './unsplash.js'
 
 const MAX_RETRIES = 5
+const RETRY_DELAY_MS = 1000
+
 async function makeRequestRetry(requestFn, retries = MAX_RETRIES) {
   try {
     return await requestFn()
@@ -36,8 +38,7 @@ try {
     allItemContents.forEach(async (item) => {
       if (item.thumbnailUrl === null) {
         const photos = await searchUnsplashPhotos(item.headLine)
-        const randomNumber = Math.floor(Math.random() * 5)
-        item.thumbnailUrl = photos?.results[randomNumber]?.urls?.regular
+        item.thumbnailUrl = photos?.results[0]?.urls?.regular
       }
 
       if (!item.thumbnailUrl) return
