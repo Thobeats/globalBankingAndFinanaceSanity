@@ -16,6 +16,6 @@ export async function getUnsplashPhotos()
 
 export async function searchUnsplashPhotos(query)
 {
-    const res = await unsplash.search.getPhotos({query, perPage: 1});
+    const res = await unsplash.search.getPhotos({query, perPage: 5});
     return res.response;
 }
