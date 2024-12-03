@@ -10,6 +10,22 @@ import {
 import {uuid} from '@sanity/uuid'
 import {searchUnsplashPhotos} from './unsplash.js'
 
+const MAX_RETRIES = 5
+async function makeRequestRetry(requestFn, retries = MAX_RETRIES) {
+  try {
+    return await requestFn()
+  } catch (error) {
+    if (error.statusCode === 429 && retries > 0) {
+      console.log(`Rate limited. Retrying in ${RETRY_DELAY_MS} ms...`)
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS))
+
+      return makeRequestRetry(requestFn, retries - 1)
+    } else {
+      throw error
+    }
+  }
+}
+
 try {
   getAccessToken().then(async (access_token) => {
     const categoryItems = await getCategoryItems(access_token)
@@ -25,7 +41,9 @@ try {
 
       if (!item.thumbnailUrl) return
 
-      let featureImage = await uploadImage(item?.thumbnailUrl, item?.headLine?.replace(/\s/g, '-'))
+      let featureImage = await makeRequestRetry(() =>
+        uploadImage(item?.thumbnailUrl, item?.headLine?.replace(/\s/g, '-')),
+      )
       const post = {
         _type: 'post',
         _id: uuid(),
@@ -83,7 +101,7 @@ try {
         },
       }
 
-      const postId = await createReuterPost(post);
+      const postId = await makeRequestRetry(() => createReuterPost(post))
 
       const article = {
         _type: 'article',
@@ -98,7 +116,7 @@ try {
         traffic: 0,
         status: 'active',
       }
-      const articleId = await createArticle(article)
+      const articleId = await makeRequestRetry(() => createArticle(article))
       console.log(articleId)
     })
 
