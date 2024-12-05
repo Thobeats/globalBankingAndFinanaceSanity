@@ -77,7 +77,6 @@ export async function deletePost()
     
 }
 
-
 export async function uploadImage(url, filename)
 {
     const image = await fetch(url);
@@ -107,6 +106,28 @@ export async function updateReuters()
         }).commit();
     });
 
+}
+
+export async function updateContent(contentId, content)
+{
+    return await client.patch(contentId).set({
+        content: [
+            {
+                _type: 'code',
+                code: trimContent(content),
+                _key: uuid()
+            }
+        ]
+    }).commit();
+}
+
+export async function getArticle(articleId)
+{
+    const article = await client.fetch(`*[
+            _type == "article" && versionGuid == $articleId
+        ]`, {articleId});
+    
+    return article;
 }
 
 export function trimContent(content)

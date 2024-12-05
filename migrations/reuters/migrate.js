@@ -6,6 +6,8 @@ import {
   getCategory,
   uploadImage,
   trimContent,
+  getArticle,
+  updateContent
 } from './sanity_helpers.js'
 import {uuid} from '@sanity/uuid'
 import {searchUnsplashPhotos} from './unsplash.js'
@@ -18,6 +20,18 @@ try {
     const categories = await getCategory(['Business', 'Finance'])
 
     allItemContents.forEach(async (item) => {
+      const getarticle = await getArticle(item.uri);
+
+      if (getarticle.length > 0)
+      {
+
+        console.log(getarticle);
+        //Update the Content
+        const updateArticleContent = await updateContent(getarticle[0]._id, item.bodyXhtml);
+        console.log(updateArticleContent._id);
+        return;
+      }
+
       if (item.thumbnailUrl === null) {
         const photos = await searchUnsplashPhotos(item.headLine)
         const randomNumber = Math.floor(Math.random() * 5)
